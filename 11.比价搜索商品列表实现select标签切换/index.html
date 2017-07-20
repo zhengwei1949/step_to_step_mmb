@@ -1,0 +1,125 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>rem test end</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+  <!--头部区域 开始-->
+  <div class="header clearfix">
+    <div class="leftArea fl" >
+      <a href="#">
+        <img src="./images/header_logo.png" alt="">
+      </a>
+    </div>
+    <div class="rightArea fr">
+      <a href="#">
+        <img src="./images/header_app.png" alt="">
+      </a>
+    </div>
+  </div>
+  <!--头部区域 结束-->
+  
+  <!--搜索区域 开始-->
+  <div class="search clearfix">
+    <input type="text" placeholder="请输入要比价的商品">
+    <input type="submit" value="搜索">
+  </div>
+  <!--搜索区域 结束-->
+
+  <!--导航区域 开始-->
+  <ul class="menu clearfix">
+
+  </ul>
+  <!--导航区域 结束-->
+
+  <!--商品列表区域 开始-->
+  <div class="cateList">
+    <div class="header">
+        <div class="leftArea fl" >
+          <h3>超值折扣推荐</h3>
+        </div>
+        <div class="rightArea fr">
+          <a href="#">
+            <img src="./images/header_app.png" alt="">
+          </a>
+        </div>
+    </div>
+    <ul class="cont clearfix">
+      
+    </ul>
+  </div>
+  <!--商品列表区域 结束-->
+
+  <!--尾部区域 开始-->
+
+  <!--尾部区域 结束-->
+  <script src="./libs/jquery.js"></script>
+  <script src="./libs/template.js"></script>
+  <script type="text/html" id="menuList">
+    {{if list}}
+      {{each list}}
+        <li>
+          <a href="./{{$value.titlehref}}">
+            {{@$value.img}}
+            <p>{{$value.name}}</p>
+          </a>
+      </li>
+      {{/each}}
+    {{/if}}
+  </script>
+  <script type="text/html" id="recommenList">
+    {{if list}}
+        {{each list}}
+          <li>
+                <div class="leftArea fl">
+                    <a href="#">
+                      {{@$value.productImgSm}}
+                    </a>
+                  </div>
+                  <div class="rightArea">
+                      <h5>{{$value.productName}}</h5>
+                        <p class="price">{{$value.productPinkage}}</p>
+                        <span class="from">{{$value.productFrom}}| {{$value.productTime}}</span>
+                        <div class="comment">
+                          {{$value.productComCount.replace('有','').replace('人评论','')}}
+                        </div>
+                  </div>
+              </li>
+        {{/each}}
+    {{/if}}
+  </script>
+  <script>
+    //导航区域
+    $(function(){
+      $.getJSON('http://localhost:3000/api/getindexmenu',function(data){
+        // console.log(data);
+        var tempStr = template('menuList',{list:data.result});
+        // console.log(tempStr);
+        $('.menu').html(tempStr);
+        //给更多添加点击事件，当点击的时候显示隐藏
+        $('.menu li:nth-child(8)').click(function(){
+          $('.menu li:nth-last-child(-n+4)').toggle();
+        });
+      })
+    });
+
+
+    //商品列表渲染
+    $(function(){
+        $.getJSON('http://127.0.0.1:3000/api/getmoneyctrl',function(data){
+            var tempStr = template('recommenList',{list:data.result});
+            // console.log(tempStr)
+            $('.cateList .cont').html(tempStr);
+        });
+        
+    });
+
+    </script>
+</body>
+</html>
+
+
+

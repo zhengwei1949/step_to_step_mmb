@@ -1,0 +1,123 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>rem test end</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/productlist.css">
+</head>
+<body>
+  <!--头部区域 开始-->
+  <div class="header clearfix">
+    <div class="leftArea fl" >
+      <a href="#">
+        <img src="./images/header_logo.png" alt="">
+      </a>
+    </div>
+    <div class="rightArea fr">
+      <a href="#">
+        <img src="./images/header_app.png" alt="">
+      </a>
+    </div>
+  </div>
+  <!--头部区域 结束-->
+  
+  <!--搜索区域 开始-->
+  <div class="search clearfix">
+    <input type="text" placeholder="请输入要比价的商品">
+    <input type="submit" value="搜索">
+  </div>
+  <!--搜索区域 结束-->
+
+
+
+  <!--商品列表区域 开始-->
+  <div class="cateList">
+    <div class="header">
+        <div class="leftArea fl" >
+          <h3>超值折扣推荐</h3>
+        </div>
+        <div class="rightArea fr">
+          <a href="#">
+            <img src="./images/header_app.png" alt="">
+          </a>
+        </div>
+    </div>
+    <ul class="cont clearfix">
+  
+    </ul>
+    <div class="pageArea">
+      <input type="button" value="上一页" id="prev">
+      <select  id="pageSelect">
+        <option value="1">第1页</option>
+        <option value="2">第2页</option>
+        <option value="3">第3页</option>
+        <option value="4">第4页</option>
+      </select>
+      <input type="button" value="下一页" id="next">
+    </div>
+  </div>
+  <!--商品列表区域 结束-->
+
+  <!--尾部区域 开始-->
+
+  <!--尾部区域 结束-->
+  <script src="./libs/jquery.js"></script>
+  <script src="./libs/template.js"></script>
+  <script type="text/html" id="list">
+    {{if result}}
+      {{each result}}
+        <li>
+        <div class="leftArea fl">
+            <a href="#">
+              {{@$value.productImg}}
+            </a>
+          </div>
+          <div class="rightArea">
+              <h5>{{$value.productName}}</h5>
+                <p class="price">{{$value.productPrice}}</p>
+                <span class="from">{{$value.productQuote}} | {{$value.productCom}}</span>
+          </div>
+      </li>
+      {{/each}}
+    {{/if}}
+  </script>
+  <script>
+    function getSearchToObjFn(str){
+      var arr = str.substr(1).split('&');
+      var obj = {};
+      for(var i=0;i<arr.length;i++){
+        var arr1 = arr[i].split('=');
+        obj[arr1[0]] = arr1[1];
+      }
+      return obj;
+    }
+
+    $(function(){
+      var searchObj = getSearchToObjFn(location.search);
+      // console.log(searchObj);
+      var maxPageId;
+      $.getJSON('http://127.0.0.1:3000/api/getproductlist',{categoryid:searchObj.categoryId,pageid:searchObj.pageid},function(data){
+        // console.log(data);
+        maxPageId = Math.ceil(data.totalCount / data.pagesize);//最大页数
+        var tempStr = template('list',data);
+        // console.log(tempStr);
+        $('.cateList .cont').html(tempStr);
+
+        //生成select标签中的option
+        
+      })
+      $("#prev").click(function(){
+        if(searchObj.pageid == '1'){
+          alert('已经是第一页了');
+        }else{
+           location.href = "./productlist.html?categoryId="+searchObj.categoryId + '&pageid=' + (Number(searchObj.pageid - 1)); 
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+

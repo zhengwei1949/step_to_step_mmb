@@ -1,0 +1,93 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>rem test end</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/category.css">
+</head>
+<body>
+  <!--头部区域 开始-->
+  <div class="header clearfix">
+    <div class="leftArea fl" >
+      <a href="#">
+        <img src="./images/header_logo.png" alt="">
+      </a>
+    </div>
+    <div class="rightArea fr">
+      <a href="#">
+        <img src="./images/header_app.png" alt="">
+      </a>
+    </div>
+  </div>
+  <!--头部区域 结束-->
+  
+  <!--搜索区域 开始-->
+  <div class="search clearfix">
+    <input type="text" placeholder="请输入要比价的商品">
+    <input type="submit" value="搜索">
+  </div>
+  <!--搜索区域 结束-->
+
+  <!--分类 开始-->
+  <ul class="category">
+       
+  </ul>
+  <!--分类 结束-->
+
+
+  <script src="./libs/jquery.js"></script>
+  <script src="./libs/template.js"></script>
+  <script type="text/html" id="list">
+    {{if result}}
+      {{each result}}
+        <li titleId="{{$value.titleId}}">
+          <h3>{{$value.title}}</h3>
+          <ul class="clearfix"></ul>
+        </li>
+      {{/each}}
+    {{/if}}
+  </script>
+  <script type="text/html" id="contList">
+    {{if result}}
+      {{each result}}
+        <li>
+          <a href="./productlist.html?categoryId={{$value.categoryId}}&pageid=1&categoryname={{$value.category}}">{{$value.category}}</a>
+        </li>
+      {{/each}}
+    {{/if}}
+  </script>
+  <script>
+    $(function(){
+      $.getJSON('http://127.0.0.1:3000/api/getcategorytitle',function(data){
+        // console.log(data);
+        var tempStr = template('list',data);
+        // console.log(tempStr);
+        $('.category').html(tempStr);
+        $('.category>li').click(function(){
+          // console.log($(this).prop('loaded'))
+          if($(this).prop('loaded')){
+            $(this).addClass('active').toggleClass("active_none").siblings().removeClass('active');
+            return;
+          }
+          var titleId = $(this).attr('titleId');
+          //这里一定要搞明白我为什么要用that
+          var that = this;
+          $.getJSON('http://127.0.0.1:3000/api/getcategory',{titleid:titleId},function(data){
+            console.log(data);
+            var tempStr = template('contList',data);
+            // console.log(tempStr);
+            $(that).find('ul.clearfix').html(tempStr);
+            $(that).addClass('active').siblings().removeClass('active');
+            $(that).prop('loaded',true);//判断是否加载过数据了
+          })
+        })
+      });
+    });
+  </script>
+  
+</body>
+</html>
+
+
+

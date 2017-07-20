@@ -1,0 +1,67 @@
+.menu {
+  padding: 10px;
+  margin-top: 10px;
+  background: #fff;
+}
+.menu > li {
+  float: left;
+  width: 25%;
+  text-align: center;
+  margin-top: 10px;
+}
+.menu > li a {
+  display: block;
+}
+.menu > li a img {
+  width: 50px;
+  height: 50px;
+}
+.cateList .header {
+  height: 35px;
+  padding: 0;
+  padding-left: 10px;
+  font-size: 16px;
+  color: #fff;
+}
+.cateList .header .leftArea h3 {
+  height: 35px;
+  line-height: 35px;
+}
+.cateList .header .rightArea {
+  padding-top: 8px;
+  margin-right: 10px;
+}
+.cateList .header .rightArea img {
+  width: 20px;
+  height: 20px;
+}
+.cateList .cont {
+  padding: 10px;
+  background: #fff;
+}
+.cateList .cont li {
+  border-bottom: 1px solid #ccc;
+}
+.cateList .cont li .leftArea a {
+  display: block;
+}
+.cateList .cont li .leftArea a img {
+  width: 100px;
+  height: 100px;
+}
+.cateList .cont li .rightArea {
+  padding-left: 100px;
+  height: 100px;
+  position: relative;
+}
+.cateList .cont li .rightArea .comment {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding-left: 40px;
+  background: url(../images/comment.svg) center center no-repeat;
+  background-size: 14px 15px;
+}
+.pageArea input {
+  color: #000 !important;
+}

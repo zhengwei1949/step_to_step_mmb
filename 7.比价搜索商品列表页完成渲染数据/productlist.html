@@ -1,0 +1,92 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>rem test end</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/productlist.css">
+</head>
+<body>
+  <!--头部区域 开始-->
+  <div class="header clearfix">
+    <div class="leftArea fl" >
+      <a href="#">
+        <img src="./images/header_logo.png" alt="">
+      </a>
+    </div>
+    <div class="rightArea fr">
+      <a href="#">
+        <img src="./images/header_app.png" alt="">
+      </a>
+    </div>
+  </div>
+  <!--头部区域 结束-->
+  
+  <!--搜索区域 开始-->
+  <div class="search clearfix">
+    <input type="text" placeholder="请输入要比价的商品">
+    <input type="submit" value="搜索">
+  </div>
+  <!--搜索区域 结束-->
+
+
+
+  <!--商品列表区域 开始-->
+  <div class="cateList">
+    <div class="header">
+        <div class="leftArea fl" >
+          <h3>超值折扣推荐</h3>
+        </div>
+        <div class="rightArea fr">
+          <a href="#">
+            <img src="./images/header_app.png" alt="">
+          </a>
+        </div>
+    </div>
+    <ul class="cont clearfix">
+  
+    </ul>
+  </div>
+  <!--商品列表区域 结束-->
+
+  <!--尾部区域 开始-->
+
+  <!--尾部区域 结束-->
+  <script src="./libs/jquery.js"></script>
+  <script src="./libs/template.js"></script>
+  <script type="text/html" id="list">
+    {{if result}}
+      {{each result}}
+        <li>
+        <div class="leftArea fl">
+            <a href="#">
+              {{@$value.productImg}}
+            </a>
+          </div>
+          <div class="rightArea">
+              <h5>{{$value.productName}}</h5>
+                <p class="price">{{$value.productPrice}}</p>
+                <span class="from">{{$value.productQuote}} | {{$value.productCom}}</span>
+          </div>
+      </li>
+      {{/each}}
+    {{/if}}
+  </script>
+  <script>
+    // console.log(location);
+    $(function(){
+      var id = location.search.split('=')[1];
+      // console.log(id);
+      $.getJSON('http://127.0.0.1:3000/api/getproductlist',{categoryid:id},function(data){
+        console.log(data);
+        var tempStr = template('list',data);
+        // console.log(tempStr);
+        $('.cateList .cont').html(tempStr);
+      })
+    });
+  </script>
+</body>
+</html>
+
+
+
